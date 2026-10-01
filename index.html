@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,300..900;1,100,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=9">
+  <link rel="stylesheet" href="css/styles.css?v=12">
 
   <script>
     document.documentElement.classList.add('js');
@@ -147,11 +147,11 @@
     <section class="hero" id="top" aria-label="Welcome">
       <div class="hero__media" data-hero-media>
         <img
-          src="images/hero-1600.jpg"
-          srcset="images/hero-800.jpg 800w, images/hero-1600.jpg 1600w"
+          src="images/hero-salon-1600.jpg"
+          srcset="images/hero-salon-800.jpg 800w, images/hero-salon-1600.jpg 1600w"
           sizes="100vw"
-          width="1600" height="2844"
-          alt="A guest with soft, glossy brunette curls just styled at Ted Salon; her stylist stands behind her in a black Ted Salon tee."
+          width="1600" height="2133"
+          alt="Inside Ted Salon on the 4th floor: black styling chairs, tall oval mirrors, teak wood slats and blush-pink walls over a marble floor."
           fetchpriority="high">
       </div>
 
@@ -164,9 +164,12 @@
           </div>
 
           <div class="hero__side" data-hero-intro>
-            <a class="hero__reel" href="#reels" data-cursor-text="Reels" aria-label="Watch Ted Salon reels">
-              <video class="lazy-video" muted loop playsinline preload="none" poster="videos/reel-blowout.jpg" data-src="videos/reel-blowout.mp4" aria-hidden="true"></video>
-              <span class="hero__reel-label"><span class="live-dot"></span> On the 4th floor</span>
+            <a class="hero__badge" href="#reels" data-cursor-text="Reels" aria-label="Watch Ted Salon reels">
+              <svg class="hero__badge-ring" viewBox="0 0 120 120" aria-hidden="true">
+                <defs><path id="badge-circle" d="M60,60 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0"/></defs>
+                <text><textPath href="#badge-circle" textLength="290" lengthAdjust="spacing">WATCH OUR REELS · WATCH OUR REELS · </textPath></text>
+              </svg>
+              <span class="hero__badge-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
             </a>
             <a class="hero__rating" href="https://maps.app.goo.gl/P9VZwgKN1CnZhaeW8" target="_blank" rel="noopener">
               <span class="stars stars--partial" aria-hidden="true">★★★★★</span>
@@ -477,8 +480,8 @@
             <figcaption>Two nail stations</figcaption>
           </figure>
           <figure class="bento__item bento__item--tall" data-clip-reveal data-cursor-text="View">
-            <img src="images/interior-mirrors.jpg" width="1050" height="1400" loading="lazy" decoding="async" data-parallax="-10" alt="Row of oval black-framed mirrors along the blush-pink wall.">
-            <figcaption>Oval mirrors, blush walls</figcaption>
+            <img src="images/loreal-shelf.jpg" width="1050" height="1400" loading="lazy" decoding="async" data-parallax="-10" alt="Back-lit shelf of L'Oréal Professionnel hair-care products.">
+            <figcaption>Pro products only</figcaption>
           </figure>
           <figure class="bento__item" data-clip-reveal data-cursor-text="View">
             <img src="images/hydrafacial.jpg" width="1050" height="1400" loading="lazy" decoding="async" data-parallax="-10" alt="Hydrafacial machine set up in the treatment room.">
@@ -497,8 +500,8 @@
             <figcaption>Soft balayage</figcaption>
           </figure>
           <figure class="bento__item" data-clip-reveal data-cursor-text="View">
-            <img src="images/loreal-shelf.jpg" width="1050" height="1400" loading="lazy" decoding="async" data-parallax="-10" alt="Back-lit shelf of L'Oréal Professionnel hair-care products.">
-            <figcaption>Pro products only</figcaption>
+            <img src="images/kanpeki.jpg" width="1050" height="788" loading="lazy" decoding="async" data-parallax="-10" alt="Kanpeki seven-step facial kits stacked on the counter of the treatment room.">
+            <figcaption>Kanpeki facials</figcaption>
           </figure>
         </div>
 
@@ -777,6 +780,7 @@
 
       <div class="site-footer__bottom">
         <p>© <span data-year>2026</span> Ted Salon®. Owned by Ted Kunchok. 50% of profits pledged to charity.</p>
+        <p class="credit">Website crafted by <a href="https://gtzservices.pages.dev/" target="_blank" rel="noopener">GTZ Services</a></p>
         <a href="#top">Back to top ↑</a>
       </div>
     </div>
@@ -806,9 +810,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js" defer></script>
-  <script src="js/menu-data.js?v=9" defer></script>
-  <script src="js/reviews.js?v=9" defer></script>
-  <script src="js/main.js?v=9" defer></script>
-  <script src="js/motion.js?v=9" defer></script>
+  <script src="js/menu-data.js?v=12" defer></script>
+  <script src="js/reviews.js?v=12" defer></script>
+  <script src="js/main.js?v=12" defer></script>
+  <script src="js/motion.js?v=12" defer></script>
 </body>
 </html>

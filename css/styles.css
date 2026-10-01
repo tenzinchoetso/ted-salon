@@ -316,19 +316,22 @@ address { font-style: normal; }
 .hero__link:hover { text-underline-offset: 10px; color: var(--gold-light); }
 
 .hero__side { display: flex; align-items: flex-end; gap: 14px; }
-.hero__badge {
-  position: relative; display: grid; place-items: center; flex-shrink: 0;
-  width: clamp(104px, 9vw, 132px); aspect-ratio: 1; border-radius: 50%; text-decoration: none;
-  background: rgba(14, 12, 10, .5); border: 1px solid rgba(236, 215, 163, .35);
+.hero__reel {
+  position: relative; display: block; flex-shrink: 0; width: clamp(120px, 11vw, 168px); aspect-ratio: 9 / 14;
+  border-radius: 999px 999px 14px 14px; overflow: hidden; text-decoration: none;
+  border: 1px solid rgba(236, 215, 163, .55); box-shadow: 0 20px 50px -20px rgba(0, 0, 0, .7);
+  transition: transform .6s var(--ease);
 }
-.hero__badge-ring { position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px); overflow: visible; animation: spin 16s linear infinite; }
-.hero__badge-ring text { font-size: 10.5px; font-weight: 700; fill: var(--gold-light); }
-.hero__badge-play {
-  width: 44%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: var(--gold-grad);
-  transition: transform .4s var(--ease);
+.hero__reel:hover { transform: translateY(-6px) rotate(-1.5deg); }
+.hero__reel video { width: 100%; height: 100%; object-fit: cover; }
+.hero__reel-label {
+  position: absolute; left: 8px; right: 8px; bottom: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
+  padding: 6px 8px; border-radius: 999px; background: rgba(14, 12, 10, .72);
 }
-.hero__badge-play svg { width: 38%; fill: var(--ink); margin-left: 6%; }
-.hero__badge:hover .hero__badge-play { transform: scale(1.12); }
+.live-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #e0544a; animation: blink 1.6s ease-in-out infinite; }
+@keyframes blink { 50% { opacity: .25; } }
 .hero__rating {
   display: inline-flex; flex-direction: column; align-items: flex-end; gap: 2px;
   font-size: 13px; text-decoration: none; text-align: right; opacity: .92;
@@ -849,7 +852,9 @@ address { font-style: normal; }
   .hero__media img { object-position: 50% 50%; }
   .hero__meta { flex-direction: column; align-items: flex-start; }
   .hero__side { width: 100%; justify-content: space-between; align-items: center; flex-direction: row-reverse; }
-  .hero__badge { width: 88px; }
+  .hero__reel { width: 72px; aspect-ratio: 1; border-radius: 50%; border: 2px solid transparent; background: var(--gold-grad) border-box; padding: 2px; }
+  .hero__reel video { border-radius: 50%; }
+  .hero__reel-label { display: none; }
   .hero__rating { align-items: flex-start; text-align: left; }
   .hero__title { flex-direction: column; gap: 0; line-height: .82; font-size: 26vw; }
   .about__stamp { right: 0; width: 88px; }

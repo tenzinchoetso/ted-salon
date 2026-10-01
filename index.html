@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,300..900;1,100,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=12">
+  <link rel="stylesheet" href="css/styles.css?v=13">
 
   <script>
     document.documentElement.classList.add('js');
@@ -164,12 +164,9 @@
           </div>
 
           <div class="hero__side" data-hero-intro>
-            <a class="hero__badge" href="#reels" data-cursor-text="Reels" aria-label="Watch Ted Salon reels">
-              <svg class="hero__badge-ring" viewBox="0 0 120 120" aria-hidden="true">
-                <defs><path id="badge-circle" d="M60,60 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0"/></defs>
-                <text><textPath href="#badge-circle" textLength="290" lengthAdjust="spacing">WATCH OUR REELS · WATCH OUR REELS · </textPath></text>
-              </svg>
-              <span class="hero__badge-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            <a class="hero__reel" href="#reels" data-cursor-text="Reels" aria-label="Watch Ted Salon reels">
+              <video class="lazy-video" muted loop playsinline preload="none" poster="videos/reel-blowout.jpg" data-src="videos/reel-blowout.mp4" aria-hidden="true"></video>
+              <span class="hero__reel-label"><span class="live-dot"></span> On the 4th floor</span>
             </a>
             <a class="hero__rating" href="https://maps.app.goo.gl/P9VZwgKN1CnZhaeW8" target="_blank" rel="noopener">
               <span class="stars stars--partial" aria-hidden="true">★★★★★</span>
@@ -810,9 +807,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js" defer></script>
-  <script src="js/menu-data.js?v=12" defer></script>
-  <script src="js/reviews.js?v=12" defer></script>
-  <script src="js/main.js?v=12" defer></script>
-  <script src="js/motion.js?v=12" defer></script>
+  <script src="js/menu-data.js?v=13" defer></script>
+  <script src="js/reviews.js?v=13" defer></script>
+  <script src="js/main.js?v=13" defer></script>
+  <script src="js/motion.js?v=13" defer></script>
 </body>
 </html>

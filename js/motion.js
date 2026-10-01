@@ -84,10 +84,12 @@
     heroTl = gsap.timeline({ paused: true });
     heroTl
       .from(heroChars.length ? heroChars : "[data-hero-title] .hero__word > span", { yPercent: 115, duration: 1.2, ease: "expo.out", stagger: 0.05 })
-      .from("[data-hero-title] .o-ring", { scale: 0, rotate: -180, duration: 1.3, ease: "expo.out" }, 0.25)
       .from("[data-hero-intro]", { y: 30, autoAlpha: 0, duration: 1, ease: "power3.out", stagger: 0.12 }, 0.3)
       .from(".site-header__inner > *", { y: -20, autoAlpha: 0, duration: 0.8, ease: "power3.out", stagger: 0.06 }, 0.2)
       .add(function () { if (window.tedPlayVisible) window.tedPlayVisible(); });
+    if ($("[data-hero-title] .o-ring")) {
+      heroTl.from("[data-hero-title] .o-ring", { scale: 0, rotate: -180, duration: 1.3, ease: "expo.out" }, 0.25);
+    }
     html.classList.add("is-fitted");
     if (heroRequested) heroTl.play();
 
@@ -149,13 +151,16 @@
       });
     });
 
-    gsap.from(".service-card--type .service-card__glyph", {
-      scale: 0.4, autoAlpha: 0, rotate: -20, duration: 1.1, ease: "back.out(1.7)",
-      scrollTrigger: { trigger: ".service-card--type", start: "top 85%", once: true }
-    });
+    if ($(".service-card--type")) {
+      gsap.from(".service-card--type .service-card__glyph", {
+        scale: 0.4, autoAlpha: 0, rotate: -20, duration: 1.1, ease: "back.out(1.7)",
+        scrollTrigger: { trigger: ".service-card--type", start: "top 85%", once: true }
+      });
+    }
 
     /* ---------- Reels: horizontal scroll while the section is pinned ---------- */
     var mm = gsap.matchMedia();
+    var hasReels = !!$("[data-reels]");
     mm.add("(min-width: 981px)", function () {
       var section = $("[data-reels]");
       var track = $("[data-reels-track]");
@@ -178,7 +183,7 @@
         scrollTrigger: { trigger: section, start: "top 70%", once: true }
       });
     });
-    mm.add("(max-width: 980px)", function () {
+    if (hasReels) mm.add("(max-width: 980px)", function () {
       gsap.from(".reel", {
         y: 50, autoAlpha: 0, duration: 0.9, ease: "expo.out", stagger: 0.07,
         scrollTrigger: { trigger: "[data-reels]", start: "top 75%", once: true }

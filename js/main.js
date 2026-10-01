@@ -99,23 +99,6 @@
     if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") { setNav(false); toggle.focus(); }
   });
 
-  /* ---------- Highlight the nav link for the section in view ---------- */
-  var navLinks = $$(".nav a");
-  if ("IntersectionObserver" in window) {
-    var sectionObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        navLinks.forEach(function (a) {
-          a.setAttribute("aria-current", a.getAttribute("href") === "#" + entry.target.id ? "true" : "false");
-        });
-      });
-    }, { rootMargin: "-45% 0px -50% 0px" });
-    navLinks.forEach(function (a) {
-      var target = $(a.getAttribute("href"));
-      if (target) sectionObserver.observe(target);
-    });
-  }
-
   /* ---------- Reveal on scroll ---------- */
   var reveals = $$(".reveal, [data-clip-reveal]");
   if (!("IntersectionObserver" in window) || reduceMotion) {
@@ -320,6 +303,30 @@
     link.addEventListener("click", function () { selectTab(link.dataset.openTab); });
   });
 
+  // menu.html#colour → open the Colour tab and bring the menu into view
+  var wanted = location.hash.slice(1);
+  if (tabsEl && menu.some(function (c) { return c.id === wanted; })) {
+    selectTab(wanted);
+    setTimeout(function () { scrollToEl($("#menu")); }, 350);
+  }
+
+  /* ---------- Home: price highlights straight from the menu data ---------- */
+  var highlights = $("[data-price-highlights]");
+  if (highlights) {
+    var rows = [];
+    menu.forEach(function (cat) {
+      cat.items.forEach(function (item) {
+        if (item.price == null) return;
+        rows.push('<li><a href="menu.html#' + cat.id + '">' +
+          '<span class="price-list__name">' + escapeHTML(item.name) + '<small>' + escapeHTML(cat.label) + "</small></span>" +
+          '<span class="price-list__dots" aria-hidden="true"></span>' +
+          '<span class="price-list__price">' + (item.onwards ? "<small>from</small>" : "") + "₹" + rupee.format(item.price) + "</span>" +
+          "</a></li>");
+      });
+    });
+    highlights.innerHTML = rows.join("");
+  }
+
   /* ---------- Reviews carousel ---------- */
   var reviewsEl = $("[data-reviews]");
   var reviews = window.TED_REVIEWS || [];
@@ -416,6 +423,7 @@
 
   /* ---------- Booking form → WhatsApp ---------- */
   var form = $("[data-book-form]");
+  var presetAndGoTo = null;
   if (form) {
     var serviceSelect = $("[data-service-select]", form);
     var timeSelect = $("[data-time-select]", form);
@@ -448,7 +456,7 @@
     var todayIST = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
     dateInput.min = todayIST;
 
-    function presetAndGo(service) {
+    presetAndGoTo = function (service) {
       serviceSelect.value = service;
       scrollToEl($("#book"));
       setTimeout(function () {
@@ -457,18 +465,17 @@
         form.classList.add("is-flash");
         form.elements.name.focus({ preventScroll: true });
       }, 900);
-    }
+    };
 
     // "Book a donation cut" and similar links preselect a service
     $$("[data-preset-service]").forEach(function (link) {
       link.addEventListener("click", function () { serviceSelect.value = link.dataset.presetService; });
     });
-    // "Enquire" buttons inside the menu
-    if (panelsEl) {
-      panelsEl.addEventListener("click", function (e) {
-        var b = e.target.closest("[data-enquire]");
-        if (b) presetAndGo(b.dataset.enquire);
-      });
+    // Arriving from another page with ?service=… (Enquire buttons, donation link)
+    var preset = new URLSearchParams(location.search).get("service");
+    if (preset) {
+      serviceSelect.value = preset;
+      setTimeout(function () { form.classList.add("is-flash"); }, 600);
     }
 
     function setError(field, message) {
@@ -509,6 +516,26 @@
       lines.push("", "Thank you!");
 
       window.open("https://wa.me/" + SALON_WHATSAPP + "?text=" + encodeURIComponent(lines.join("\n")), "_blank", "noopener");
+    });
+  }
+
+  /* ---------- "Enquire" buttons in the menu ---------- */
+  if (panelsEl) {
+    panelsEl.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-enquire]");
+      if (!b) return;
+      if (form) presetAndGoTo(b.dataset.enquire);
+      else location.href = "find-us.html?service=" + encodeURIComponent(b.dataset.enquire) + "#book";
+    });
+  }
+
+  /* ---------- Arriving with a #section from another page (e.g. find-us.html#book) ---------- */
+  // Wait until fonts and the animation layer have settled, then land exactly on it.
+  var arrival = location.hash.length > 1 && !(tabsEl && menu.some(function (c) { return "#" + c.id === location.hash; }))
+    ? document.getElementById(location.hash.slice(1)) : null;
+  if (arrival) {
+    window.addEventListener("load", function () {
+      setTimeout(function () { arrival.scrollIntoView({ behavior: "auto", block: "start" }); }, 150);
     });
   }
 

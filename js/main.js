@@ -8,12 +8,8 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
-  var lenis = function () { return window.__lenis; };
-
   function scrollToEl(el) {
-    if (!el) return;
-    if (lenis()) lenis().scrollTo(el, { offset: -10, duration: 1.4 });
-    else el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    if (el) el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
   }
 
   /* ---------- Fit the giant wordmarks to the container width ---------- */
@@ -34,13 +30,18 @@
   function fitAll() { $$("[data-fit]").forEach(fitText); }
   window.tedFitAll = fitAll;
 
-  var resizeTimer;
+  // Only re-fit when the width really changes (phones fire resize while scrolling)
+  var resizeTimer, lastWidth = window.innerWidth;
   window.addEventListener("resize", function () {
+    if (window.innerWidth === lastWidth) return;
+    lastWidth = window.innerWidth;
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(fitAll, 80);
+    resizeTimer = setTimeout(fitAll, 120);
   });
   fitAll();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
+  // Failsafe: show the title even if the animation layer never starts
+  setTimeout(function () { document.documentElement.classList.add("is-fitted"); }, 2500);
 
   /* ---------- Buttons: rolling label on hover ---------- */
   $$(".btn").forEach(function (btn) {
@@ -81,7 +82,6 @@
     $(".visually-hidden", toggle).textContent = open ? "Close menu" : "Open menu";
     document.body.classList.toggle("nav-open", open);
     document.body.style.overflow = open ? "hidden" : "";
-    if (lenis()) open ? lenis().stop() : lenis().start();
     if (open) {
       mobileNav.hidden = false;
       requestAnimationFrame(function () { requestAnimationFrame(function () { mobileNav.classList.add("is-open"); }); });
@@ -117,7 +117,7 @@
   }
 
   /* ---------- Reveal on scroll ---------- */
-  var reveals = $$(".reveal");
+  var reveals = $$(".reveal, [data-clip-reveal]");
   if (!("IntersectionObserver" in window) || reduceMotion) {
     reveals.forEach(function (el) { el.classList.add("is-in"); });
   } else {
@@ -186,7 +186,6 @@
         modalVideo.poster = btn.dataset.reelPoster || "";
         modalVideo.src = btn.dataset.reelOpen;
         modal.showModal();
-        if (lenis()) lenis().stop();
         var p = modalVideo.play(); if (p && p.catch) p.catch(function () {});
       });
     });
@@ -196,7 +195,6 @@
       modalVideo.pause();
       modalVideo.removeAttribute("src");
       modalVideo.load();
-      if (lenis()) lenis().start();
     });
   } else {
     // Old browsers: open the video file directly

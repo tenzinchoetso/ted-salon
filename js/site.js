@@ -1,8 +1,7 @@
 /* ==========================================================================
-   Ted Salon demo — behaviour (plain JS, no libraries).
-   Data: TED_MENU / TED_POLICIES (../js/menu-data.js), TED_TEAM (team.js),
-   TED_PRODUCTS / TED_RANGES (products.js), TED_REVIEWS (../js/reviews.js).
-   Bookings and product reservations open WhatsApp with a ready message —
+   Ted Salon — behaviour (plain JS, no libraries).
+   Data: TED_MENU / TED_POLICIES (menu-data.js), TED_TEAM (team.js),
+   TED_REVIEWS (reviews.js). Bookings open WhatsApp with a ready message —
    nothing is sent until the guest presses send.
    ========================================================================== */
 (function () {
@@ -19,7 +18,6 @@
     return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
   };
   var inr = function (n) { return "₹" + Number(n).toLocaleString("en-IN"); };
-  var img = function (name) { return "assets/img/" + name + ".jpg"; };
   var waUrl = function (text) { return "https://wa.me/" + WA + "?text=" + encodeURIComponent(text); };
 
   var MENU = window.TED_MENU || [];
@@ -27,8 +25,6 @@
   var TEAM = window.TED_TEAM || [];
   var DEPTS = window.TED_DEPTS || [];
   var EXTRA = window.TED_EXTRA_SERVICES || {};
-  var PRODUCTS = window.TED_PRODUCTS || [];
-  var RANGES = window.TED_RANGES || [];
   var REVIEWS = window.TED_REVIEWS || [];
 
   var teamById = {};
@@ -112,27 +108,6 @@
   });
 
   /* ---------- Rendering helpers ---------- */
-  function productCard(p) {
-    var full = (p.line === "Schwarzkopf Professional" ? "" : "Schwarzkopf Professional ") + p.line + " " + p.name;
-    var msg = "Hello Ted Salon! I'd like to reserve " + full + ". Could you confirm the price and keep it at reception for me?";
-    var price = p.price ? inr(p.price) : "Price in salon";
-    return '<article class="pcard" data-range="' + p.range + '">' +
-      '<div class="pcard__img">' +
-        (p.tag ? '<span class="pcard__tag">' + esc(p.tag) + "</span>" : "") +
-        '<img src="' + img(p.img) + '" alt="' + esc(p.line + " " + p.name) + '" loading="lazy" width="800" height="1000" draggable="false">' +
-        '<img src="' + img(p.hover) + '" alt="" aria-hidden="true" loading="lazy" width="900" height="1125" draggable="false">' +
-        '<a class="pill pill--light pcard__quick" href="' + waUrl(msg) + '" target="_blank" rel="noopener">Reserve on WhatsApp</a>' +
-      "</div>" +
-      '<div class="pcard__meta">' +
-        '<span class="pcard__line">' + esc(p.line) + "</span>" +
-        '<h3 class="pcard__name">' + esc(p.name) + "</h3>" +
-        '<span class="pcard__note">' + esc(p.note) + "</span>" +
-        '<span class="pcard__price">' + price + "</span>" +
-        '<a class="pill pill--dark pill--sm pcard__reserve" href="' + waUrl(msg) + '" target="_blank" rel="noopener">Reserve</a>' +
-      "</div>" +
-    "</article>";
-  }
-
   function teamCard(p, opts) {
     var q = opts.quotes && p.quote
       ? '<blockquote class="tcard__quote">“' + esc(p.quote.text) + "”<cite>— " + esc(p.quote.by) + "</cite></blockquote>" : "";
@@ -153,28 +128,8 @@
     "</figure>";
   }
 
-  /* ---------- Product strips, grid, range tiles ---------- */
-  $$("[data-products]").forEach(function (strip) {
-    var want = strip.dataset.products.split(",");
-    var list = want[0] === "all" ? PRODUCTS : PRODUCTS.filter(function (p) { return want.indexOf(p.range) > -1; });
-    strip.innerHTML = list.map(productCard).join("");
-  });
-
-  var tiles = $("[data-tiles]");
-  if (tiles) {
-    var seen = {};
-    tiles.innerHTML = RANGES.filter(function (r) {
-      if (!r.img || seen[r.img]) return false;
-      seen[r.img] = true; return true;
-    }).slice(0, 4).map(function (r) {
-      return '<a class="tile" href="shop.html#' + r.id + '" data-reveal>' +
-        '<img src="' + img(r.img) + '" alt="" loading="lazy" width="900" height="1125">' +
-        '<span class="tile__copy"><strong>' + esc(r.label) + "</strong><span>Shop now</span></span></a>";
-    }).join("");
-  }
-
-  // Chip filters (shop by range, team by department)
-  function setupChips(bar, items, cards, attr, countEl, describe) {
+  // Chip filters (team by department)
+  function setupChips(bar, items, cards, attr) {
     bar.innerHTML = items.map(function (it) {
       var n = it.id === "all" ? cards.length : cards.filter(function (c) { return c.dataset[attr] === it.id; }).length;
       return n ? '<button class="chip" type="button" data-chip="' + it.id + '" aria-pressed="false">' + esc(it.label) + " <span class=\"muted\">" + n + "</span></button>" : "";
@@ -182,13 +137,10 @@
     function apply(id, push) {
       if (!$('[data-chip="' + id + '"]', bar)) id = "all";
       $$("[data-chip]", bar).forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.chip === id)); });
-      var shown = 0;
       cards.forEach(function (c) {
         var on = id === "all" || c.dataset[attr] === id;
         c.classList.toggle("is-hidden", !on);
-        if (on) shown++;
       });
-      if (countEl) countEl.textContent = describe(id, shown);
       if (push) history.replaceState(null, "", id === "all" ? location.pathname : "#" + id);
     }
     bar.addEventListener("click", function (e) {
@@ -200,15 +152,6 @@
     fromHash();
   }
 
-  var grid = $("[data-grid-products]");
-  if (grid) {
-    grid.innerHTML = PRODUCTS.map(productCard).join("");
-    setupChips($('[data-chips="products"]'), RANGES, $$(".pcard", grid), "range", $("[data-count]"), function (id, n) {
-      var r = RANGES.filter(function (x) { return x.id === id; })[0];
-      return n + (n === 1 ? " product" : " products") + (r && r.blurb ? " — " + r.blurb : " from Schwarzkopf Professional, on our shelves now.");
-    });
-  }
-
   /* ---------- Team ---------- */
   $$("[data-team]").forEach(function (strip) {
     strip.innerHTML = bookable.map(function (p) { return teamCard(p, {}); }).join("");
@@ -216,7 +159,7 @@
   var teamGrid = $("[data-grid-team]");
   if (teamGrid) {
     teamGrid.innerHTML = TEAM.map(function (p) { return teamCard(p, { quotes: true }); }).join("");
-    setupChips($('[data-chips="team"]'), DEPTS, $$(".tcard", teamGrid), "dept", null);
+    setupChips($('[data-chips="team"]'), DEPTS, $$(".tcard", teamGrid), "dept");
   }
 
   /* ---------- Reviews (rendered twice so the drift loops seamlessly) ---------- */
@@ -366,6 +309,17 @@
       openWhatsApp(lines.join("\n"));
     });
   });
+
+  // Old links such as find-us.html?service=Hair%20donation%20cut#book preselect a service
+  var presetService = new URLSearchParams(location.search).get("service");
+  if (presetService) {
+    $$("[data-book-form]").forEach(function (form) {
+      if (drawer && drawer.contains(form)) return;
+      var sel = $("[data-service]", form);
+      sel.value = presetService;
+      if (sel.value !== presetService) sel.value = "";
+    });
+  }
 
   function openBook(opts) {
     if (!drawer) return;

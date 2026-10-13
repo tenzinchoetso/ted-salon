@@ -26,10 +26,12 @@ window.TED_TEAM = [
     services: ["pmu"] },
   { id: "kunal",     name: "Kunal",     role: "Therapist",                    dept: "therapy", photo: "IMG_0886",
     services: ["therapy", "treatments"] },
-  { id: "amir",      name: "Amir",      role: "Unisex Hair Stylist",          dept: "hair",  photo: "IMG_0887",
-    services: ["hair", "treatments"] },
+  { id: "amir",      name: "Amir",      role: "Stylist · Colourist",          dept: "hair",  photo: "IMG_0887",
+    services: ["colour", "hair", "treatments"] },
   { id: "chompel",   name: "Chompel",   role: "Senior Stylist · Colourist",   dept: "hair",  photo: "IMG_0889",
     services: ["colour", "hair", "treatments"] },
+  { id: "sunny",     name: "Sunny",     role: "Stylist",                      dept: "hair",  photo: "IMG_1175",
+    services: ["hair"] },
   { id: "rohit",     name: "Rohit",     role: "Nail Artist",                  dept: "nails", photo: "IMG_0892",
     services: ["nails", "handsfeet"] },
   { id: "kashish",   name: "Kashish",   role: "Nail Artist",                  dept: "nails", photo: "IMG_0905",
@@ -50,6 +52,5 @@ window.TED_DEPTS = [
 
 /* Booking-only services that aren't on the printed menu */
 window.TED_EXTRA_SERVICES = {
-  pmu: { label: "Permanent make-up (PMU)", items: ["PMU consultation"] },
   therapy: { label: "Therapy", items: ["Head Massage", "Schwarzkopf Spa Essence"] }
 };

@@ -300,6 +300,8 @@ html.is-locked { overflow: hidden; }
 .who:hover { background: var(--lav); }
 .who img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
 .svc__list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 36px; align-content: start; }
+.svc__group { grid-column: 1 / -1; padding: 26px 0 8px; border-bottom: 1px solid var(--ink); font: 600 11px/1.2 var(--f-body); letter-spacing: .14em; text-transform: uppercase; }
+.svc__group:first-child { padding-top: 4px; }
 .svc__item { display: grid; grid-template-columns: 1fr auto; gap: 2px 14px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--line); }
 .svc__name { font-weight: 600; }
 .svc__name small { font-weight: 400; color: var(--muted); }

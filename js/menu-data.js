@@ -6,6 +6,10 @@
    Sept 2026 (instagram.com/reel/DdeCYPlzoBH). Facial names and durations
    come from the same book; their prices weren't legible in the video.
 
+   PMU, BB Glow, microneedling and lash prices come from the salon's
+   "Permanent Makeup & Lash Services" menu (TED PMU MENU.pdf, Oct 2026).
+   `onwards: true` shows "from". `group` adds a sub-heading inside a category.
+
    `price: null`  → the page shows an "Enquire" button that opens the
    booking form with that service selected. When the salon shares the rest
    of its price list, just replace null with the number (e.g. price: 1500).
@@ -88,11 +92,51 @@ window.TED_MENU = [
   {
     id: "lashes",
     label: "Lashes & Brows",
-    note: "Patch test recommended before your first set of extensions.",
+    note: "Lashes customised to your eyes for a soft, natural or defined finish. Patch test recommended before your first set of extensions.",
     items: [
-      { name: "Lash extensions", desc: "Classic or volume sets.", price: null },
-      { name: "Lash refill", desc: "Keep your set full.", price: null },
-      { name: "Brow threading", desc: "Clean, defined shape.", price: null }
+      { group: "Eyelash extensions", name: "Classic lash extensions", price: 2500, onwards: true },
+      { group: "Eyelash extensions", name: "Hybrid lash extensions", price: 3000, onwards: true },
+      { group: "Refills", name: "Classic refill", price: 1500, onwards: true },
+      { group: "Refills", name: "Hybrid refill", price: 1700, onwards: true },
+      { group: "Lash lift & brows", name: "Lash Lift", price: 1500 },
+      { group: "Lash lift & brows", name: "Lash Lift + Tint", price: 2500 },
+      { group: "Lash lift & brows", name: "Brow Lamination", price: 1500 },
+      { group: "Lash lift & brows", name: "Brow Tint", price: 1000 },
+      { group: "Lash lift & brows", name: "Brow Lamination + Brow Tint", price: 2500 },
+      { group: "Lash lift & brows", name: "Brow threading", desc: "Clean, defined shape.", price: null }
+    ]
+  },
+  {
+    id: "pmu",
+    label: "Permanent Make-up (PMU)",
+    note: "Customised permanent make-up for brows and lips, designed around your face shape, features and the look you want.",
+    items: [
+      { group: "Brows", name: "Microblading", price: 10000, onwards: true },
+      { group: "Brows", name: "Nano Brows", price: 13000, onwards: true },
+      { group: "Brows", name: "Ombre / Powder Brows", price: 12000, onwards: true },
+      { group: "Brows", name: "Combination Brows", price: 16000, onwards: true },
+      { group: "Lips", name: "Lip Blush", desc: "A soft, fresh tint.", price: 10000, onwards: true },
+      { group: "Lips", name: "Lip Neutralisation", desc: "Balances uneven or darker lip tones.", price: 15000, onwards: true },
+      { group: "Lips", name: "Lip Blush + Neutralisation", price: 18000, onwards: true },
+      { group: "Touch-up", name: "6–8 Week Touch-up", price: 6000, onwards: true },
+      { group: "Touch-up", name: "Annual Colour Refresh", price: 10000, onwards: true },
+      { group: "Touch-up", name: "Touch-up for Previous Work", price: 5000, onwards: true },
+      { group: "Correction", name: "Old PMU Colour Correction", price: 7000, onwards: true },
+      { group: "Correction", name: "Old PMU Colour-up", price: 9000, onwards: true }
+    ]
+  },
+  {
+    id: "skin",
+    label: "BB Glow & Microneedling",
+    note: "BB Glow is a skin-enhancing treatment for a smoother, more even and radiant-looking complexion — an effortless “your skin, but better” finish.",
+    items: [
+      { group: "Skin BB Glow", name: "BB Glow Facial", price: 8000, onwards: true },
+      { group: "Skin BB Glow", name: "BB Glow + Hydrating Booster", price: 13000, onwards: true },
+      { group: "Skin BB Glow", name: "3-Session BB Glow Package", price: 20000, onwards: true },
+      { group: "Skin BB Glow", name: "3-Session BB Glow + Hydrating Booster Package", price: 34000, onwards: true },
+      { group: "Microneedling", name: "Microneedling with Hydrating Serum", price: 7000, onwards: true },
+      { group: "Microneedling", name: "Advanced Microneedling", price: 9000, onwards: true },
+      { group: "Microneedling", name: "3-Session Microneedling Package", price: 17000, onwards: true }
     ]
   }
 ];

@@ -184,12 +184,16 @@
       var who = whoDoes(c.id);
       return '<section class="svc__cat" id="' + c.id + '" aria-labelledby="svc-' + c.id + '">' +
         '<div><h2 class="h-sec" id="svc-' + c.id + '">' + esc(c.label) + "</h2>" +
-          (c.note ? '<p class="muted">' + esc(c.note) + "</p>" : c.id === "pmu" ? '<p class="muted">Semi-permanent brows and lips by our salon manager — start with a consultation.</p>' : "") +
+          (c.note ? '<p class="muted">' + esc(c.note) + "</p>" : "") +
           (who.length ? '<div class="svc__who" aria-label="Who does it">' + who.map(function (p) {
             return '<button class="who" type="button" data-book-with="' + p.id + '" data-cat="' + c.id + '"><img src="' + photo(p, true) + '" alt="" width="30" height="30" loading="lazy">' + esc(p.name) + "</button>";
           }).join("") + "</div>" : "") +
         "</div>" +
-        '<ul class="svc__list">' + c.items.map(function (it) { return serviceRow(c, it); }).join("") + "</ul>" +
+        '<ul class="svc__list">' + c.items.map(function (it, k) {
+          // sub-heading whenever the item's group changes (Brows, Lips, Refills…)
+          var head = it.group && (k === 0 || c.items[k - 1].group !== it.group) ? '<li class="svc__group">' + esc(it.group) + "</li>" : "";
+          return head + serviceRow(c, it);
+        }).join("") + "</ul>" +
       "</section>";
     }).join("");
     var svcChips = $('[data-chips="services"]');
